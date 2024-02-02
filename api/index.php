@@ -5,7 +5,6 @@ session_start();
 
 // Отримуємо що там хотів від нас користувач
 $action = $_GET['action'] ?? null;
-var_dump($action);
 
 // Якщо action прийшов пустим - видаємо помилку
 if(empty($action)) {
@@ -14,9 +13,10 @@ if(empty($action)) {
     exit;
 }
 
-// Якщо користувач хотів не авторизуватись або вийти - перевіряємо, чи авторизованний він
-if ($action != "login" && $action != "logout") {
-    if (!isset($_SESSION['user'])) {
+const ACTION_WITHOUT_AUTH = ["signUp", "signIn"];
+
+if (!in_array($action, ACTION_WITHOUT_AUTH)){
+    if (!isset($_SESSION['user_id'])) {
         echo "401 Unauthorized";
         http_response_code(401);
         exit;
@@ -24,7 +24,7 @@ if ($action != "login" && $action != "logout") {
 }
 
 // Формуємо шлях до файлу обробника
-$file_path = "src/" . $action . ".php";
+$file_path = "src/Requests/" . $action . ".php";
 
 // Якщо в нас нема такого обробника - видаємо помилку
 if (!file_exists($file_path)) {
