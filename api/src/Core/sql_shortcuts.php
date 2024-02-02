@@ -45,7 +45,7 @@ class DB
      * @param string $sql - Запит
      * @param array $params - Масив параметрів
      */
-    public static function exec_request(string $sql, array $params)
+    public static function execRequest(string $sql, array $params)
     {
         $dbConnection = self::initDB();
         list($sql, $params) = self::parseBoundArrays($sql, $params);
