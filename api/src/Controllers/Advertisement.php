@@ -38,7 +38,13 @@ class Advertisement
 
     private function create()
     {
-        $id = DB::insert("INSERT INTO `advertisements` (`slug`) VALUES (:slug)", ["slug" => $this->slug]);
+        $title = OLX::getAdvertisementTitle($this->slug);
+        // Можна й не записувати назву до бд а динамічно брати її перед генерацією листа
+        // Але по-перше тепер можна виводити на фронт більш зрозуміло
+        // А по-друге це захист від того що назва зміниться і користувачу на пошту прийде лист де якийсь товар який він не додавав
+        // Але якщо в роботі замовнику (та/або проджект менеджеру) треба буде інакша логіка - будь ласка, змінити не проблема
+
+        $id = DB::insert("INSERT INTO `advertisements` (`title`, `slug`) VALUES (:title ,:slug)", ["title" => $title, "slug" => $this->slug]);
         return $id;
     }
 
