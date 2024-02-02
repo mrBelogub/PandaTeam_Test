@@ -2,7 +2,7 @@
 
 $advertisement_id = $_GET["id"] ?? null;
 
-Validator::isEmpty("ID обʼяви", $advertisement_id);
+Validator::isEmpty("ID оголошення", $advertisement_id);
 
 $subscription_data = Price::getByAdvertisementID($advertisement_id);
 
