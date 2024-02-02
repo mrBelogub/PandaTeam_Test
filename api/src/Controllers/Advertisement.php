@@ -1,7 +1,7 @@
 <?php
 
-class Advertisement{
-
+class Advertisement
+{
     private string $url;
     public string $slug;
     public int $id;
@@ -13,20 +13,22 @@ class Advertisement{
         $this->id = $this->getId();
     }
 
-    private function getSlug(){
+    private function getSlug()
+    {
         $path = parse_url($this->url, PHP_URL_PATH);
         $basename = basename($path);
-        if(empty($basename)){
+        if(empty($basename)) {
             throw new Exception("При обробці посилання виникла помилка: не вдалось знайти сторінку");
         }
         return $basename;
     }
 
-    private function getId(){
+    private function getId()
+    {
         $data = DB::getOne("SELECT `id` FROM `advertisements` WHERE `slug` = :slug", ["slug" => $this->slug]);
         $id = $data["id"] ?? null;
 
-        if(empty($id)){
+        if(empty($id)) {
             $id = $this->create();
         }
 
@@ -34,8 +36,14 @@ class Advertisement{
 
     }
 
-    private function create(){
+    private function create()
+    {
         $id = DB::insert("INSERT INTO `advertisements` (`slug`) VALUES (:slug)", ["slug" => $this->slug]);
         return $id;
+    }
+
+    public static function getAll() {
+        $advertisements = DB::execRequest("SELECT * FROM `advertisements`", []);
+        return $advertisements;
     }
 }
