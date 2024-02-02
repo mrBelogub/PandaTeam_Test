@@ -6,5 +6,6 @@ require_once 'validator.php'; // Валідатор
 
 require_once __DIR__.'/../Controllers/Advertisement.php'; //
 require_once __DIR__.'/../Controllers/OLX.php'; // 
+require_once __DIR__.'/../Controllers/Price.php'; //
 require_once __DIR__.'/../Controllers/Subscription.php'; // 
 require_once __DIR__.'/../Controllers/User.php'; // 
