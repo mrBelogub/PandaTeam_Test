@@ -38,7 +38,12 @@ class Advertisement
 
     private function create()
     {
-        $title = OLX::getAdvertisementTitle($this->slug);
+        $info = OLX::getAdvertisementInfo($this->slug);
+        if(empty($info)){
+            throw new Exception("Помилка отримування даних оголошення");
+        }
+
+        $title = $info["title"];
         // Можна й не записувати назву до бд а динамічно брати її перед генерацією листа
         // Але по-перше тепер можна виводити на фронт більш зрозуміло
         // А по-друге це захист від того що назва зміниться і користувачу на пошту прийде лист де якийсь товар який він не додавав
