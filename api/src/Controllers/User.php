@@ -6,8 +6,7 @@ class User
     {
         $user_id = $_SESSION['user_id'];
         if (empty($user_id)) {
-            header("Location: ../signin.php");
-            exit();
+            throw new Exception("Ви не авторизовані!");
         }
         return $user_id;
     }
@@ -89,10 +88,6 @@ class User
 
         // Якщо ж все добре - записуємо в сессію інформацію
         $_SESSION['user_id'] = $user_data["id"];
-
-        // Та перекидуємо на головну сторінку
-        header("Location: ../index.php");
-        exit();
     }
 
     public static function createFromSubscriptionForm($email)
@@ -121,9 +116,5 @@ class User
 
         session_unset();
         session_destroy();
-
-        // Перекидуємо на сторінку авторизациії
-        header("Location: ../signin.php");
-        exit();
     }
 }
