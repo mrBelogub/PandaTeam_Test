@@ -87,7 +87,7 @@ class OLX
     private static function getPageXpath($slug)
     {
         $url = self::getFullURL($slug);
-        $page = file_get_contents($url);
+        $page = self::getContents($url);
 
         if(!$page) {
             throw new Exception("Помилка при обробці оголошення");
@@ -102,5 +102,15 @@ class OLX
     private static function getFullURL(string $slug)
     {
         return self::URL_PREFIX . $slug;
+    }
+
+    private static function getContents($url){
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($ch);
+
+        curl_close($ch);
+
+        return $result;
     }
 }
