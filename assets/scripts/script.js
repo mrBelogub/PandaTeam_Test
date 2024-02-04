@@ -207,8 +207,17 @@ function formatDateTime(dateTimeString) {
 
 
 function signOut() {
-    $.get("api/signOut");
-    window.location.href = "signin.php";
+
+    $.ajax({
+        type: "GET",
+        url: "api/signOut",
+        success: function () {
+            window.location.href = "signin.php";
+        },
+        error: function (jqXHR) {
+            alert(jqXHR.responseText);
+        }
+    });
 }
 
 function updateOLXPrices(){
