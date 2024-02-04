@@ -83,7 +83,7 @@ class Subscription
 
             $difference_with_sign = ($calculated_difference >= 0) ? "+$calculated_difference" : "$calculated_difference";
 
-            $result[$price['advertisement_id']] = "<a href='{$price['advertisement_url']}' title='_blank'> {$price['advertisement_title']} - {$price['new_price']} ($difference_with_sign) </a>";
+            $result[$price['advertisement_id']] = "<a href='{$price['advertisement_url']}' title='_blank'> {$price['advertisement_title']}</a> - {$price['new_price']} ($difference_with_sign)<br>";
             return $result;
         }, []);
 

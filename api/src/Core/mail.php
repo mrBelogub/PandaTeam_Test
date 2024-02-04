@@ -10,8 +10,10 @@ class Mail{
 
     public static function send(string $email, string $subject, string $message){
 
-        $headers = 'From: PandaTeam@belogub.com' . "\r\n" .
-            'X-Mailer: PHP/' . phpversion();
+        $message = "<html><body>".$message."</body></html>";
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $headers .= "From: PandaTeam@belogub.com" . "\r\n";
         
         return mail($email, $subject, $message, $headers, "-fPandaTeam@belogub.com");
     }
