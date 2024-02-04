@@ -2,19 +2,31 @@
 
 class User
 {
-    public static function getID(){
+    public static function getID()
+    {
         $user_id = $_SESSION['user_id'];
-        if (empty($user_id)){
-            // 
-            header("Location: ../login.php");
+        if (empty($user_id)) {
+            header("Location: ../signin.php");
             exit();
         }
         return $user_id;
     }
 
+    public static function getData()
+    {
+        $id = self::getID();
+        $data = DB::getOne("SELECT * FROM `users` WHERE `id` = :id", ["id" => $id]);
+        return $data;
+    }
+
+    private static function getDataByEmail($email)
+    {
+        $data = DB::getOne("SELECT * FROM `users` WHERE `email` = :email", ["email" => $email]);
+        return $data;
+    }
+
     public static function signUp(string $email, string $password)
     {
-
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
         // Реєструємо
@@ -26,38 +38,44 @@ class User
             // Можна було б робити спочатку SELECT до бд (плюс - не інкрементувало б ID, мінус - +1 запит до бд, то я вирішив що не треба зайвий запит до БД)
         }
 
-        self::sendConfirmationCode($email);
+        return $user_id;
     }
 
-    public static function sendConfirmationCode(string $email, bool $should_throw_exception = false)
+    public static function sendActivationCode(string $email, bool $should_throw_exception = false)
     {
-        $code = rand(0, 10000);
+        $code = md5(time() . $email . rand(0, 100000));
 
         $server_url = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" . "://" . $_SERVER['HTTP_HOST'];
-        $confirmation_url = $server_url . "/activateProfile?email=".$email."&code=" . $code;
+        $activation_url = $server_url . "/activateProfile?code=" . $code;
 
-        $message = str_replace("%URL%", $confirmation_url, MAIL::TEMPLATE_SIGNUP_CONFIRMATION_MESSAGE);
+        $message = str_replace("%URL%", $activation_url, MAIL::TEMPLATE_SIGNUP_ACTIVATION_MESSAGE);
 
-        $mail_sended = Mail::send($email, MAIL::TEMPLATE_SIGNUP_CONFIRMATION_SUBJECT, $message);
+        $mail_sended = Mail::send($email, MAIL::TEMPLATE_SIGNUP_ACTIVATION_SUBJECT, $message);
 
-        if (!$mail_sended && $should_throw_exception) {
-            throw new Exception("При надсиланні листа виникла помилка!");
+        if(!$mail_sended) {
+
+            if ($should_throw_exception) {
+                throw new Exception("При надсиланні листа виникла помилка!");
+            }
+
+            return;
         }
 
-        DB::execRequest("UPDATE `users` SET `confirmation_code` = :code WHERE `email` = :email;", ["code" => $code, "email" => $email]);
+        DB::execRequest("UPDATE `users` SET `activation_code` = :code WHERE `email` = :email;", ["code" => $code, "email" => $email]);
     }
 
-    public static function isUnconfirmed(string $email, string $code)
+    public static function isNotActivated(string $email, string $code)
     {
-        $user_data = DB::getOne("SELECT `id` FROM `user` WHERE `email` = :email AND `confirmation_code` = :code;", ["email" => $email, "code" => $code]);
+        $user_data = DB::getOne("SELECT `id` FROM `users` WHERE `email` = :email AND `activation_code` = :code;", ["email" => $email, "code" => $code]);
+
         if(empty($user_data)) {
-            throw new Exception("Акаунту за вказаним кодом не знайдено!");
+            throw new Exception("Це посилання для активації недійсне.");
         }
     }
 
-    public static function confirm(string $email, string $code)
+    public static function activate(string $email, string $code)
     {
-        DB::execRequest("UPDATE `users` SET `confirmation_code` = NULL WHERE `email` = :email AND `confirmation_code` = :code;", ["email" => $email, "code" => $code]);
+        DB::execRequest("UPDATE `users` SET `activation_code` = NULL WHERE `email` = :email  AND `activation_code` = :code;", ["email" => $email, "code" => $code]);
     }
 
 
@@ -75,7 +93,24 @@ class User
         // Та перекидуємо на головну сторінку
         header("Location: ../index.php");
         exit();
+    }
 
+    public static function createFromSubscriptionForm($email)
+    {
+        $user_data = self::getDataByEmail($email);
+        $user_id = $user_data["id"] ?? null;
+
+        if(empty($user_id)) {
+            $user_id = self::signUp($email, $email);
+
+            if(empty($user_id)) {
+                throw new Exception("При обробці E-mail виникла помилка");
+            }
+        }
+
+        self::sendActivationCode($email);
+
+        return $user_id;
     }
 
     public static function signOut()
@@ -88,11 +123,7 @@ class User
         session_destroy();
 
         // Перекидуємо на сторінку авторизациії
-        header("Location: ../login.php");
+        header("Location: ../signin.php");
         exit();
     }
-
-
-
-
 }

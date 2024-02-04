@@ -2,8 +2,8 @@
 
 class Mail{
 
-    public const TEMPLATE_SIGNUP_CONFIRMATION_SUBJECT = "Підтвердження реєстрації";
-    public const TEMPLATE_SIGNUP_CONFIRMATION_MESSAGE = "Для підтвердження реєстрації - перейдіть за посиланням: %URL%";
+    public const TEMPLATE_SIGNUP_ACTIVATION_SUBJECT = "Підтвердження реєстрації";
+    public const TEMPLATE_SIGNUP_ACTIVATION_MESSAGE = "Для підтвердження реєстрації - перейдіть за посиланням: %URL%";
 
     public const TEMPLATE_PRICE_CHANGE_SUBJECT = "На деякі товари у ваших підписках змінилась ціна!";
     public const TEMPLATE_PRICE_CHANGE_MAIL = "Ось, подивiться!<br><br>";

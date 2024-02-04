@@ -13,7 +13,7 @@ if(empty($action)) {
     exit;
 }
 
-const ACTION_WITHOUT_AUTH = ["signUp", "signIn"];
+const ACTION_WITHOUT_AUTH = ["signUp", "signIn", "subscribeWithoutAuth", "activateProfile"];
 
 if (!in_array($action, ACTION_WITHOUT_AUTH)){
     if (!isset($_SESSION['user_id'])) {

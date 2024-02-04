@@ -10,3 +10,4 @@ Validator::isEmailCorrect($email);
 
 User::signUp($email, $password);
 
+User::sendActivationCode($email);

@@ -19,40 +19,42 @@ class OLX
 
             $old_price = Price::getLastByAdvertisementID($id);
             $new_price = self::getAdvertisementInfo($slug)["price"] ?? null;
-
-            if(empty($new_price)){
+            
+            if(empty($new_price)) {
                 continue;
             }
 
-            if($new_price != $old_price){
+            if($new_price != $old_price) {
+                Price::create($id, $new_price);
 
-                DB::insert("INSERT INTO `prices` (`advertisement_id`, `price`) VALUES (:advertisement_id, :price)", ["advertisement_id" => $id, "price" => $new_price]);
+                $url = self::getFullURL($slug);
 
-                if(!empty($old_price)){
-                    $url = self::getFullURL($slug);
-
-                    $changed_prices[] = [
-                        "advertisement_id" => $id,
-                        "advertisement_title" => $title,
-                        "advertisement_url" => $url,
-                        "old_price" => $old_price,
-                        "new_price" => $new_price
-                    ];
-                }   
+                $changed_prices[] = [
+                    "advertisement_id" => $id,
+                    "advertisement_title" => $title,
+                    "advertisement_url" => $url,
+                    "old_price" => $old_price,
+                    "new_price" => $new_price
+                ];
             }
+        }
+
+        if (empty($changed_prices)) {
+            return;
         }
 
         Subscription::notificateUsersAboutPriceChange($changed_prices);
     }
 
-    public static function getAdvertisementInfo(string $slug){
+    public static function getAdvertisementInfo(string $slug)
+    {
 
         $xpath = self::getPageXpath($slug);
 
         $title = self::getAdvertisementTitle($xpath);
         $price = self::getAdvertisementPrice($xpath);
 
-        if(empty($title) || empty($price)){
+        if(empty($title) || empty($price)) {
             return [];
         }
 
@@ -64,7 +66,8 @@ class OLX
         return $result;
     }
 
-    private static function getAdvertisementTitle($xpath){
+    private static function getAdvertisementTitle($xpath)
+    {
         $anchor = $xpath->query('//title');
 
         $page_title = $anchor[0]->nodeValue ?? "";
@@ -73,16 +76,22 @@ class OLX
         return $clear_title;
     }
 
-    private static function getAdvertisementPrice($xpath){
+    private static function getAdvertisementPrice($xpath)
+    {
         $anchor = $xpath->query('//h3[@class="css-12vqlj3"]');
 
         $price = $anchor[0]->nodeValue ?? 0;
         return $price;
     }
 
-    private static function getPageXpath($slug){
+    private static function getPageXpath($slug)
+    {
         $url = self::getFullURL($slug);
         $page = file_get_contents($url);
+
+        if(!$page) {
+            throw new Exception("Помилка при обробці оголошення");
+        }
 
         $doc = new DOMDocument();
         $doc->loadHTML($page);
@@ -90,7 +99,8 @@ class OLX
         return $xpath;
     }
 
-    private static function getFullURL(string $slug){
-        return self::URL_PREFIX.$slug;
+    private static function getFullURL(string $slug)
+    {
+        return self::URL_PREFIX . $slug;
     }
 }

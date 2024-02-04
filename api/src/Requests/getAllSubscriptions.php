@@ -1,7 +1,15 @@
 <?php
 
-$user_id = User::getID();
+$user_data = User::getData();
+$user_id = $user_data["id"];
 
-$subscriptions = Subscription::getByUser($user_id);
+$subscriptions = Subscription::getAllByUser($user_id);
 
-echo json_encode($subscriptions);
+$is_not_activated = boolval($user_data["activation_code"]);
+
+$result = [
+    "subscriptions" => $subscriptions,
+    "is_not_activated" => $is_not_activated
+];
+
+echo json_encode($result);
