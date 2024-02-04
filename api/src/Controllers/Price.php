@@ -16,7 +16,7 @@ class Price{
 
         $prices_data = DB::execRequest("SELECT `price`, `prices`.`created_at` FROM `prices`
                                         LEFT JOIN `subscriptions` ON `subscriptions`.`user_id` = :user_id AND `subscriptions`.`advertisement_id` = `prices`.`advertisement_id`
-                                        WHERE `prices`.`advertisement_id` = :advertisement_id AND `prices`.`created_at` > `subscriptions`.`created_at` ", ["user_id" => $user_id, "advertisement_id" => $advertisement_id]);
+                                        WHERE `prices`.`advertisement_id` = :advertisement_id AND `prices`.`created_at` >= `subscriptions`.`created_at` ", ["user_id" => $user_id, "advertisement_id" => $advertisement_id]);
         return $prices_data ? $prices_data : (object) [];
     }
 
