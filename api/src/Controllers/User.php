@@ -103,8 +103,6 @@ class User
             }
         }
 
-        self::sendActivationCode($email);
-
         return $user_id;
     }
 
