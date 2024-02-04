@@ -13,7 +13,7 @@ function getAllSubscriptions() {
             Увага! Ваш аккаунт не активовано! На реальному проекті це б означало, що ви б не могли користуватись фукціями сайту (або навіть авторизуватись).<br><br>
             Але зараз оскільки це умова із розділу "Ускладення" - то це ні на що не впливає.<br><br>
             Щоб прибрати це повідомленя (тобто активувати аккаунт) - будь ласка, перейдіть за посиланням у надісланому Вам E-mail.<br><br>
-            Якщо листа нема у папці "Inbox" - перевірте папку "Spam", або <a href="signin.php"><u>натиснiть сюди</u></a> щоб отримати нового листа.
+            Якщо листа нема у папці "Inbox" - перевірте папку "Spam", або <a href="javascript:void(0);" onclick="resendActivationCode()"><u>натиснiть сюди</u></a> щоб отримати нового листа.
           </div>`);
         }
 
@@ -64,6 +64,19 @@ function getAllSubscriptions() {
 
         $("#advertisements").html(advertisements);
 
+    });
+}
+
+function resendActivationCode(){
+    $.ajax({
+        type: "POST",
+        url: "api/resendActivationCode",
+        success: function () {
+            alert("Код надіслано повторно");
+        },
+        error: function (jqXHR) {
+            alert(jqXHR.responseText);
+        }
     });
 }
 

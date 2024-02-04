@@ -44,8 +44,8 @@ class User
     {
         $code = md5(time() . $email . rand(0, 100000));
 
-        $server_url = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" . "://" . $_SERVER['HTTP_HOST'];
-        $activation_url = $server_url . "/activateProfile?code=" . $code;
+        $server_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https://" : "http://";
+        $activation_url = $server_url . $_SERVER['HTTP_HOST'] . "/api/activateProfile?email=".$email."&code=" . $code;
 
         $message = str_replace("%URL%", $activation_url, MAIL::TEMPLATE_SIGNUP_ACTIVATION_MESSAGE);
 
