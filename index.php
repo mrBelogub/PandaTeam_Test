@@ -50,7 +50,7 @@ if (!isset($_SESSION['user_id'])) {
       <button id="update-olx-prices" class="btn btn-outline-primary" type="button" onclick="updateOLXPrices()">Примусово оновити*</button>
     </center>
     *Мається на увазі - зімітувати роботу крону, тобто пройтись по всім оголошенням (не лише цього користувача) та оновити ціни де вони змінились (та оповістити про це користувачів).
-    Цієї кнопки не має бути, але треба ж дати змогу перевіряючим тестове через фронт приумсово пройтись по всім оголошенням
+    Цієї кнопки не має бути, але треба ж дати змогу перевіряючим тестове через фронт примусово пройтись по всім оголошенням
 
     <div class="modal fade" id="prices-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">

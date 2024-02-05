@@ -48,7 +48,7 @@ if (isset($_SESSION['user_id'])) {
 
         <div id="sign-in-alert"></div>
 
-        <div class="text-center no-account">Немає аккауту? <a href="signup.php">Зарєструватись!</a></div>
+        <div class="text-center no-account">Немає аккаунту? <a href="signup.php">Зареєструватись!</a></div>
 
         <hr style="border-top: 1px solid rgb(200, 200, 200);">
         <div class="text-center name">
