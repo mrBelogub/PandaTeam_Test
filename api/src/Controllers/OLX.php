@@ -8,6 +8,8 @@ class OLX
 
     public static function saveNewPrices()
     {
+        ini_set('max_execution_time', 600);
+
         $advertisements = Advertisement::getAll();
 
         $changed_prices = [];
@@ -38,6 +40,8 @@ class OLX
                 ];
             }
         }
+
+        var_dump($changed_prices);
 
         if (empty($changed_prices)) {
             return;
