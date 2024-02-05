@@ -18,7 +18,7 @@ class User
         return $data;
     }
 
-    private static function getDataByEmail($email)
+    public static function getDataByEmail($email)
     {
         $data = DB::getOne("SELECT * FROM `users` WHERE `email` = :email", ["email" => $email]);
         return $data;
@@ -29,12 +29,10 @@ class User
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
         // Реєструємо
-        $user_id = DB::insert("INSERT IGNORE INTO `users` (`email`, `password_hash`) VALUES (:email, :password_hash)", ["email" => $email, "password_hash" => $password_hash]);
+        $user_id = DB::insert("INSERT INTO `users` (`email`, `password_hash`) VALUES (:email, :password_hash)", ["email" => $email, "password_hash" => $password_hash]);
 
         if(empty($user_id)) {
-            return;
-            // Це зроблено для того щоб унеможливити перебором знайти який емейл зареєстровано а який ні
-            // Можна було б робити спочатку SELECT до бд (плюс - не інкрементувало б ID, мінус - +1 запит до бд, то я вирішив що не треба зайвий запит до БД)
+            throw new Exception("При реєстрації виникла помилка");
         }
 
         return $user_id;
