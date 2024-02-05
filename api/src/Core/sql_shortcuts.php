@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . "/../../../db.cfg.php";
-
 class DB
 {
     private static function initDB()

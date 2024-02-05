@@ -11,7 +11,7 @@ class Validator
      */
     public static function isEmpty(string $name, mixed $var)
     {
-        $trimmed_var = trim($var);
+        $trimmed_var = trim($var ?? "");
         if(empty($trimmed_var)) {
             throw new Exception($name . " is empty!");
         }

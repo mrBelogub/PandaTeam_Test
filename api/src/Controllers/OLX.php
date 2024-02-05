@@ -41,8 +41,6 @@ class OLX
             }
         }
 
-        var_dump($changed_prices);
-
         if (empty($changed_prices)) {
             return;
         }

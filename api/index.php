@@ -23,8 +23,10 @@ if (!in_array($action, ACTION_WITHOUT_AUTH)){
     }
 }
 
+require_once __DIR__ . "../../db.cfg.php";
+
 // Формуємо шлях до файлу обробника
-$file_path = "src/Requests/" . $action . ".php";
+$file_path = "Requests/" . $action . ".php";
 
 // Якщо в нас нема такого обробника - видаємо помилку
 if (!file_exists($file_path)) {

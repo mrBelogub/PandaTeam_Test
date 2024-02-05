@@ -1,7 +1,7 @@
 <?php
 
-define("DB_HOST", "");
-define("DB_PORT", "");
-define("DB_NAME", "");
-define("DB_USER", "");
-define("DB_PASS", "");
+define("DB_NAME", "PandaTeam");
+define("DB_PORT", "3306");
+define("DB_USER", "db_user");
+define("DB_PASS", "db_pass");
+define("DB_HOST", "mysql");
