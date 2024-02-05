@@ -14,9 +14,20 @@ class Price{
     public static function getByAdvertisementForUser(int $advertisement_id){
         $user_id = User::getID();
 
-        $prices_data = DB::execRequest("SELECT `price`, `prices`.`created_at` FROM `prices`
-                                        LEFT JOIN `subscriptions` ON `subscriptions`.`user_id` = :user_id AND `subscriptions`.`advertisement_id` = `prices`.`advertisement_id`
-                                        WHERE `prices`.`advertisement_id` = :advertisement_id AND `prices`.`created_at` >= `subscriptions`.`created_at` ", ["user_id" => $user_id, "advertisement_id" => $advertisement_id]);
+        $prices_data = DB::execRequest("SELECT `price`, `prices`.`created_at`
+                                            FROM `prices`
+                                            LEFT JOIN `subscriptions` ON `subscriptions`.`user_id` = :user_id AND `subscriptions`.`advertisement_id` = `prices`.`advertisement_id`
+                                            WHERE `prices`.`advertisement_id` = :advertisement_id 
+                                            AND (`prices`.`created_at` >= `subscriptions`.`created_at` OR (
+                                                    `prices`.`created_at` = (
+                                                        SELECT MAX(`created_at`)
+                                                        FROM `prices`
+                                                        WHERE `advertisement_id` = `subscriptions`.`advertisement_id`
+                                                        AND `created_at` < `subscriptions`.`created_at`
+                                                    )
+                                                )
+                                            );", ["user_id" => $user_id, "advertisement_id" => $advertisement_id]);
+                                            // NOTE:: Цей SQL запит був значно меншим до поки я не вирішив додати ще й останню ціну перед датою підписки
         return $prices_data ? $prices_data : (object) [];
     }
 
