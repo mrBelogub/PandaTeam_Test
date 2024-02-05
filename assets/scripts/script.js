@@ -149,6 +149,10 @@ function show_details(id) {
 
 function getCleanPrice(stringed_price) {
     var match = stringed_price.match(/[\d\s.]+(?=\D|$)/);
+
+    if(match == null){
+        return 0;
+    }
     var numeric_price = parseFloat(match[0].replace(/\s/g, ''));
 
     return numeric_price;
