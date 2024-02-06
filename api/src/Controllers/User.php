@@ -45,9 +45,9 @@ class User
      * Отримання інформації про користувача за його E-mail
      *
      * @param string $email E-mail користувача
-     * @return array інформація про користувача із БД
+     * @return array|false інформація про користувача із БД (або false, якщо не знайдено)
      */
-    public static function getDataByEmail(string $email): array
+    public static function getDataByEmail(string $email): array|false
     {
         // Отримуємо інформацію про користувача із БД за його E-mail
         $data = DB::getOne("SELECT * FROM `users` WHERE `email` = :email", ["email" => $email]);
