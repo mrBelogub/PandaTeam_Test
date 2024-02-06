@@ -28,7 +28,7 @@ class Subscription
         // щоб користувач міг швидко зорієнтуватись без потреби відкривати кожну підписку.
         // Задля того щоб швидше здати тз (я роблю це у суботу, тобто для уточнень прийшлось би чекати понеділка) я вирішив зробити так
         // Але на роботі, якщо прямо не вказано треба чи не треба це робити - звісно краще було б обсудити с проджектом
-        $subscription_data = DB::execRequest("SELECT `subscriptions`.`advertisement_id` as `id`, `advertisements`.`title`, `prices`.`price`, `prices`.`created_at` as `updated_at`,
+        $subscription_data = DB::execRequest("SELECT `subscriptions`.`advertisement_id` as `id`, `advertisements`.`title`, `prices`.`price`, `prices`.`created_at` as `updated_at`, CONCAT(:url_prefix, `advertisements`.`slug`) as `url`,
                                                     (
                                                         SELECT `price`
                                                         FROM `prices`
@@ -49,7 +49,7 @@ class Subscription
                                                     )
                                                 LEFT JOIN `advertisements` ON `advertisements`.`id` = `subscriptions`.`advertisement_id`
                                                 WHERE `subscriptions`.`user_id` = :user_id
-                                                ORDER BY `subscriptions`.`id` DESC;", ["user_id" => $user_id]);
+                                                ORDER BY `subscriptions`.`id` DESC;", ["user_id" => $user_id, "url_prefix" => OLX::URL_PREFIX]);
         // NOTE: Можна було б зробити інші варіанти сортування
         // Наприклад: останні додані спочатку, або остання змінена ціна спочатку
         // Або додати варіацію сортування в залежності від вибору на фронті

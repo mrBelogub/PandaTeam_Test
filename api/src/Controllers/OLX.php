@@ -9,8 +9,7 @@ error_reporting(error_reporting() & ~E_WARNING);
 class OLX
 {
     // Строка яка йде у кожному посиланні на оголошення перед самим шляхом до html
-    private const URL_PREFIX = "https://www.olx.ua/d/uk/obyavlenie/";
-
+    public const URL_PREFIX = "https://www.olx.ua/d/uk/obyavlenie/";
 
     /**
      * Оновити ціни на оголошення

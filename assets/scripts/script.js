@@ -27,6 +27,7 @@ function getAllSubscriptions() {
             var price = value["price"];
             var previous_price = value["previous_price"];
             var updated_at = value["updated_at"];
+            var url = value["url"];
 
             var difference_str = "";
             var price_status = "equal";
@@ -53,7 +54,7 @@ function getAllSubscriptions() {
             var updated_time = formatted_updated_at.time;
 
             advertisements += `<div class="advertisement"  onclick="show_details(` + id + `)">
-                                    <div class="title">`+ title + `</div>
+                                    <div class="title"><a href="`+url+`" target="_blank" style="cursor: alias">`+ title + `</a></div>
                                     <div class="price `+ price_status + `">` + price + difference_str + `</div>
                                     <div class="updated_at">
                                         <span class="date">` + updated_date + `</span>
