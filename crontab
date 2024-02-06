@@ -1,0 +1,1 @@
+*/10 * * * * /usr/local/bin/php /var/www/html/api/src/Core/update_prices.php 2>&1

@@ -7,7 +7,7 @@ RUN apt-get update \
         libicu-dev \
         libzip-dev \
         unzip \
-        sendmail \
+        cron \
     && docker-php-ext-install \
         pdo_mysql \
         intl \
@@ -26,5 +26,15 @@ RUN a2enmod rewrite
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN cd /var/www/html && composer install
 
-# Запускаємо Apache
-CMD ["apache2-foreground"]
+# Копіюємо файл крону до cron.d
+COPY crontab /etc/cron.d/crontab
+ 
+# Видаємо права на виконання крону з файлу
+RUN chmod 0644 /etc/cron.d/crontab
+
+# Запускаємо роботу крону
+RUN crontab /etc/cron.d/crontab
+
+# Запускаємо крон та апач
+CMD cron && apache2-foreground
+
