@@ -73,6 +73,12 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- Дамп даних таблиці `users`
+--
+
+INSERT INTO `users` (`id`, `email`, `password_hash`, `activation_code`) VALUES
+(1, 'first@mail.com', '$2y$10$ENnF3zwZQxyj1gzX10JPneHpQsqvOgmJwCvhlNfbVU4rRYEWhvCNC', NULL);
+--
 -- Індекси збережених таблиць
 --
 

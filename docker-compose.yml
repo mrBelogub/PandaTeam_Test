@@ -12,6 +12,17 @@ services:
     volumes: 
       - ./db:/docker-entrypoint-initdb.d
 
+  mysql-test:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: PandaTeam_Test
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: db_pass
+      TZ: Europe/Kiev
+    volumes: 
+      - ./db:/docker-entrypoint-initdb.d
+
   php-app:
     build: 
       context: .
@@ -19,6 +30,7 @@ services:
       - "8080:80"
     depends_on:
       - mysql
+      - mysql-test
     environment:
       PMA_HOST: mysql
       MYSQL_ROOT_PASSWORD: root
@@ -26,9 +38,19 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     ports:
-      - "8081:80"
+      - "8100:80"
     depends_on:
       - mysql
     environment:
       PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: root
+  
+  phpmyadmin-test:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8200:80"
+    depends_on:
+      - mysql-test
+    environment:
+      PMA_HOST: mysql-test
       MYSQL_ROOT_PASSWORD: root
