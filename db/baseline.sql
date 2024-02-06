@@ -3,14 +3,13 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost:8889
--- Час створення: Лют 04 2024 р., 20:37
+-- Час створення: Лют 06 2024 р., 13:15
 -- Версія сервера: 5.7.39
 -- Версія PHP: 8.2.0
 
--- SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
--- START TRANSACTION;
--- SET time_zone = "+00:00";
-
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,7 +28,7 @@
 
 CREATE TABLE `advertisements` (
   `id` int(11) NOT NULL,
-  `title` varchar(70) NOT NULL,
+  `title` varchar(128) NOT NULL,
   `slug` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
