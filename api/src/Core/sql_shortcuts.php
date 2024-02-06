@@ -81,7 +81,7 @@ class DB
         list($sql, $params) = self::parseBoundArrays($sql, $params);
         $stmt = $dbConnection->prepare($sql);
         if ($stmt->execute($params)) {
-            return $dbConnection->lastInsertId();
+            return (int) $dbConnection->lastInsertId();
         } else {
             return false;
         }

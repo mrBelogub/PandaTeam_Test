@@ -13,8 +13,10 @@ if(empty($action)) {
     exit();
 }
 
+// Формуємо методи до яких можна звертатись без авторизації
 const ACTION_WITHOUT_AUTH = ["signUp", "signIn", "subscribeWithoutAuth", "activateProfile"];
 
+// Якщо до методу не можна звертатись без авторизації - видаємо помилку
 if (!in_array($action, ACTION_WITHOUT_AUTH)){
     if (!isset($_SESSION['user_id'])) {
         http_response_code(401);
@@ -23,9 +25,12 @@ if (!in_array($action, ACTION_WITHOUT_AUTH)){
     }
 }
 
+// Підключаемо реквізіти БД
 require_once __DIR__ . "../../db.cfg.php";
+// NOTE: по хорошому їх треба підключити у файлі роботи з БД
+// Але я так зробив для того щоб в тестах використовувалась інша БД
 
-// Формуємо шлях до файлу обробника
+// Формуємо шлях до файлу обробника методу
 $file_path = "Requests/" . $action . ".php";
 
 // Якщо в нас нема такого обробника - видаємо помилку
