@@ -1,5 +1,5 @@
 # Використовуємо образ PHP
-FROM php:8.0-apache
+FROM php:8.2.0-apache
 
 # Встановюємо додаткові залежності
 RUN apt-get update \
